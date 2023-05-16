@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <cmath>
 
 
 /**
@@ -74,7 +75,63 @@ bool SearchMatrix(std::vector<std::vector<int>>& Matrix, int Target)
     return false;
 }
 
-int main() {
+/**
+ * * An answer to the question "Given n piles of any amount of object, if a being can move
+ *   these objects out of the piles at an unknown speed k, such that all the piles are empty
+ *   at time h. Then what is the minimum possible value for k"
+ *
+ *  * Requires h > 0 and all elements in piles > 0.
+ *
+ * @param piles A vector of integers where piles[i] represents the number of objects in pile i.
+ * @param h The number of hours the being is constrained to move all the objects in.
+ * @returns The minimum possible speed such that all the piles are empty by time h.
+ */
+int MinMovingSpeed(std::vector<int>& Piles, int h)
+{
+    /*
+     * Initialise binary search variables.
+     * The slowest time of k is 1.
+     * The fastest time of k is the maximum element of piles.
+     */
+    int Min = 1;
+    int Max = *max_element(Piles.begin(), Piles.end());
 
+    int Ans = -1; // Initialise a container to hold the answer, returns -1 if an answer is not found.
+
+    // Binary search.
+    while (Min <= Max)
+    {
+        int Mid = Min + (Max - Min) / 2;
+
+        // Check if all piles can be eaten.
+        int Hours = 0;
+        bool CanMoveAllObjects = true;
+
+        for (int PileSize : Piles)
+        {
+            Hours += std::ceil(PileSize / (double)Mid);
+
+            if (Hours > h)
+            {
+                CanMoveAllObjects = false;
+                break;
+            }
+        }
+
+        if (CanMoveAllObjects)
+        {
+            Ans = Mid;
+            Max = Mid - 1;
+        }
+        else
+        {
+            Min = Mid + 1;
+        }
+    }
+    return Ans;
+}
+
+int main()
+{
     return 0;
 }
