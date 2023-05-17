@@ -131,6 +131,51 @@ int MinMovingSpeed(std::vector<int>& Piles, int h)
     return Ans;
 }
 
+/**
+ * * A rotated vector is a sorted vector whose entries have been translated x times.
+ *   For example [0, 1, 2, 3, 4, 5] rotated twice becomes [4, 5, 0, 1, 2, 3].
+ *   The objective of this function is to find the minimum element in the rotated array.
+ *
+ * * The function uses a binary search method to accomplish this using the following steps..
+ *   1) Initialise two integers which represent the index of the beginning and the end of the vector.
+ *   2) Start iterating through steps 3), 4), 5) and 6).
+ *   3) If the beginning and the end of the vector have equal values, then the vector is of size 1 so return this value.
+ *   4) Calculate the index of the middle element in the vector using the arithemic mean of begin and end indexes.
+ *   5) If the begin index is less than the middle index, then this half of the list is sorted, so remove this half.
+ *   6) If the begin index is greater than the middle index, then this half contains the minimum element, keep this half.
+ *   7) Return the beginning index of the nums vector, which is now pointing to the minimum element.
+ *
+ * @param nums A vector which is first sorted and then rotated.
+ * @returns The value of the minimum element in the vector.
+ */
+int FindMinimumInRotatedVector(std::vector<int>& nums)
+{
+    // Initialise two variables to represent the start and end of the vector
+    // These will be used to half the size of the vector on each iteration.
+    int Begin = 0;
+    int End = nums.size() - 1;
+
+    while (Begin <= End)
+    {
+        if (nums[Begin] <= nums[End])
+        {
+            return nums[Begin];      // The current vector is not rotated, the first element is the smallest.
+        }
+
+        int Mid = (Begin + End) / 2; // Arithmetic mean of Begin and End gives the middle element of the vector.
+
+        if (nums[Begin] <= nums[Mid])
+        {
+            Begin = Mid + 1;         // The minimum element does not exist in Begin to Mid, use the other half.
+        }
+        else
+        {
+            End = Mid;               // The minimum element does exist in this vector so do not remove the middle point.
+        }
+    }
+    return nums[Begin];
+}
+
 int main()
 {
     return 0;
