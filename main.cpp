@@ -176,6 +176,54 @@ int FindMinimumInRotatedVector(std::vector<int>& nums)
     return nums[Begin];
 }
 
+/**
+ * * Searches for a specific element in a sorted and then rotated array using a binary search.
+ *   For example a rotated array looks like [2, 0, 1], which is the array [0, 1, 2] rotated once.
+ *
+ * @param nums A sorted, rotated vector of integers.
+ * @param target A value we want to see if the vector contains.
+ * @returns the index of the target value. If the target cannot be found, -1 is returned.
+ */
+int ElementSearchInSortedRotatedVector(std::vector<int>& nums, int target)
+{
+    int Begin = 0;
+    int End = nums.size() - 1;
+
+    while (Begin <= End)
+    {
+        int Mid = Begin + (End - Begin) / 2;
+
+        if (nums[Mid] == target)
+        {
+            return Mid;
+        }
+
+        if (nums[Begin] <= nums[Mid])
+        {
+            if (nums[Begin] <= target && target < nums[Mid])
+            {
+                End = Mid - 1;
+            }
+            else
+            {
+                Begin = Mid + 1;
+            }
+        }
+        else
+        {
+            if (nums[Mid] < target && target <= nums[End])
+            {
+                Begin = Mid + 1;
+            }
+            else
+            {
+                End = Mid - 1;
+            }
+        }
+    }
+    return -1;
+}
+
 int main()
 {
     return 0;
